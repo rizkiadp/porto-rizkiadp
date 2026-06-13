@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>Rizki Agung Dwi Prayoga | Web Developer Portfolio</title>
+  <meta name="description" content="Portfolio of Rizki Agung Dwi Prayoga - Web Developer & UI Designer. Specialized in clean, fast, and interactive web applications." />
+  
+  <!-- Compiled Tailwind CSS and Custom Styles -->
+  <link rel="stylesheet" href="/_next/static/chunks/5e34264dc024efb4.css" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <!-- Tailwind CDN (handles dynamic classes from JS) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {} } }
+  </script>
+  <!-- Portfolio Section Styles -->
+  <style>
+    #project { position: relative; z-index: 1; }
+    #project-cards-container {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 24px !important;
+    }
+    @media (max-width: 900px) {
+      #project-cards-container { grid-template-columns: repeat(2, 1fr) !important; }
+    }
+    @media (max-width: 600px) {
+      #project-cards-container { grid-template-columns: 1fr !important; }
+    }
+    .porto-card {
+      background: #0d0d14;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      min-height: 290px;
+    }
+    .porto-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(113,99,241,0.5);
+      box-shadow: 0 20px 50px rgba(113,99,241,0.15);
+    }
+    .porto-card-header {
+      width: 100%; height: 110px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden; flex-shrink: 0;
+    }
+    .porto-card-icon { font-size: 40px; line-height: 1; position: relative; z-index: 1; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6)); }
+    .porto-card-year { position: absolute; top: 10px; right: 12px; background: rgba(0,0,0,0.65); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.65); font-size: 11px; font-family: monospace; padding: 2px 10px; border-radius: 99px; }
+    .porto-card-lang { position: absolute; bottom: 10px; left: 14px; display: flex; align-items: center; gap: 6px; }
+    .porto-card-lang-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .porto-card-lang-name { color: rgba(255,255,255,0.4); font-size: 10px; font-family: monospace; max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .porto-card-body { padding: 14px; display: flex; flex-direction: column; gap: 10px; flex: 1; justify-content: space-between; }
+    .porto-card-title { font-size: 13.5px; font-weight: 700; color: #ffffff; line-height: 1.35; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: color 0.2s; }
+    .porto-card:hover .porto-card-title { color: #7163F1; }
+    .porto-card-role { display: inline-block; color: #7163F1; font-size: 10px; font-weight: 600; background: rgba(113,99,241,0.1); border: 1px solid rgba(113,99,241,0.2); padding: 2px 9px; border-radius: 99px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .porto-card-desc { color: rgba(255,255,255,0.42); font-size: 11.5px; font-weight: 300; line-height: 1.6; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .porto-card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .porto-tag { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); font-size: 10px; font-family: monospace; padding: 2px 9px; border-radius: 99px; }
+    .porto-card-footer { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .porto-card-id { color: rgba(255,255,255,0.2); font-size: 10px; font-family: monospace; text-transform: uppercase; letter-spacing: 0.05em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .porto-gh-btn { display: flex; align-items: center; gap: 5px; background: rgba(113,99,241,0.1); border: 1px solid rgba(113,99,241,0.3); color: #7163F1; padding: 5px 13px; border-radius: 10px; font-size: 11px; font-weight: 700; text-decoration: none; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+    .porto-gh-btn:hover { background: #7163F1; color: #fff; border-color: #7163F1; }
+    #project-pagination { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 40px; }
+    .pg-btn { height: 40px; padding: 0 16px; display: flex; align-items: center; justify-content: center; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: rgba(255,255,255,0.5); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .pg-btn:hover:not(:disabled) { border-color: rgba(113,99,241,0.5); color: #7163F1; }
+    .pg-btn.active { width: 40px; padding: 0; background: #7163F1; border-color: #7163F1; color: #fff; box-shadow: 0 0 20px rgba(113,99,241,0.4); }
+    .pg-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  </style>
+</head>
+<body class="bg-black text-white antialiased overflow-x-hidden selection:bg-[#7163F1] selection:text-white">
+
+  <!-- 1. Interactive Loading Screen -->
+  <div class="fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center overflow-hidden transition-all duration-800" id="page-loader">
+    <span class="absolute top-6 left-6 text-white/20 text-[10px] tracking-[0.4em] uppercase font-mono">rizki.dev</span>
+    <span class="absolute top-6 right-6 text-white/20 text-[10px] tracking-[0.4em] uppercase font-mono">2026</span>
+    <div class="overflow-hidden h-20 flex items-center justify-center">
+      <p class="text-white text-3xl md:text-5xl font-light tracking-wider select-none font-sans" id="loader-greeting">welcome</p>
+    </div>
+    <div class="absolute bottom-8 left-6 right-6 flex flex-col gap-3">
+      <div class="w-full h-px bg-white/10 relative overflow-hidden rounded-full">
+        <div class="absolute top-0 left-0 h-full bg-white transition-all duration-100 rounded-full" id="loader-progress-bar" style="width:0%"></div>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-white/30 text-[10px] uppercase tracking-[0.3em] font-mono">Initializing System</span>
+        <span class="text-white/60 text-[10px] font-mono tabular-nums" id="loader-progress-text">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Header and Navigation -->
+  <header>
+    <!-- Overlay Navigation Menu -->
+    <nav style="display:none" id="nav-overlay" class="fixed z-50 bg-black/95 backdrop-blur-md h-[100dvh] w-full py-8 md:py-12 lg:px-20 md:px-10 px-5 text-white/50 flex flex-col justify-between md:w-[50%] md:left-[50%] overflow-y-auto pb-12 border-l border-white/10">
+      <div class="flex flex-col justify-center flex-1 py-4">
+        <div class="h-10 flex flex-col justify-between mb-8">
+          <p class="text-xs uppercase tracking-widest text-white/40">Navigation</p>
+          <div class="bg-white/20 w-full h-[1px]"></div>
+        </div>
+        <div class="text-white md:text-5xl text-4xl gap-4 md:gap-6 flex flex-col font-semibold">
+          <div class="overflow-hidden w-fit">
+            <a href="#home" class="hover:text-[#7163F1] transition-all duration-300 cursor-pointer block">Home</a>
+          </div>
+          <div class="overflow-hidden w-fit">
+            <a href="#about" class="hover:text-[#7163F1] transition-all duration-300 cursor-pointer block">About</a>
+          </div>
+          <div class="overflow-hidden w-fit">
+            <a href="#project" class="hover:text-[#7163F1] transition-all duration-300 cursor-pointer block">Portfolio</a>
+          </div>
+          <div class="overflow-hidden w-fit">
+            <a href="#experience" class="hover:text-[#7163F1] transition-all duration-300 cursor-pointer block">Experience</a>
+          </div>
+          <div class="overflow-hidden w-fit">
+            <a href="#contact" class="hover:text-[#7163F1] transition-all duration-300 cursor-pointer block">Contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="text-white/50 text-xs shrink-0 mt-8">
+        <p class="mb-2 uppercase tracking-widest text-white/40">Socials</p>
+        <div class="flex flex-wrap gap-4 text-white font-medium">
+          <a href="https://www.linkedin.com/in/rizkiadp" target="_blank" class="hover:text-[#7163F1] transition-colors">LinkedIn</a>
+          <a href="https://github.com/rizkiadp" target="_blank" class="hover:text-[#7163F1] transition-colors">GitHub</a>
+          <a href="https://www.instagram.com/riskiiiadp" target="_blank" class="hover:text-[#7163F1] transition-colors">Instagram</a>
+          <a href="https://wa.me/62881026002302" target="_blank" class="hover:text-[#7163F1] transition-colors">WhatsApp</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Rotating Text Logo -->
+    <div class="fixed z-50 top-6 left-6 md:left-7 scale-[0.18] md:scale-[0.25] origin-top-left transition-all duration-500 ease-in-out pointer-events-auto">
+      <div id="rotating-logo" class="m-0 mx-auto rounded-full w-[200px] h-[200px] relative font-black text-white text-center cursor-pointer origin-center transition-colors duration-500 text-white!">
+        <!-- Populated via JS -->
+      </div>
+    </div>
+
+    <!-- Toggle Controls -->
+    <div class="fixed z-50 top-6 right-6 md:right-7 flex items-center gap-4">
+      <!-- Language Switcher -->
+      <div class="flex items-center gap-2 bg-black/40 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full text-xs font-bold tracking-widest">
+        <a href="/id/" class="text-white/50 hover:text-white transition-colors">ID</a>
+        <span class="text-white/30">/</span>
+        <span class="text-[#7163F1] cursor-default">EN</span>
+      </div>
+
+      <!-- Hamburger Menu Button -->
+      <div id="menu-btn" class="flex flex-col items-center justify-center gap-1.5 transition-all duration-500 ease-in-out backdrop-blur-md border rounded-full cursor-pointer w-12 h-12 md:w-14 md:h-14 shadow-lg bg-[#fefefe]/10 border-[#fefefe]/20">
+        <span class="block w-6 h-0.5 rounded-full transition-all duration-300 bg-[#fefefe]"></span>
+        <span class="block w-6 h-0.5 rounded-full transition-all duration-300 bg-[#fefefe]"></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3. Starry Hero Section -->
+  <section id="home" class="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
+    <canvas class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+    
+    <div class="relative z-10 max-w-[1200px] mx-auto px-6 text-center flex flex-col items-center gap-8 mt-16">
+      <p class="text-white/40 text-xs md:text-sm tracking-[0.5em] uppercase font-mono animate-fade-in">Web Developer &amp; UI Designer</p>
+      
+      <h1 class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-white tracking-tighter leading-none max-w-4xl" style="font-family:'Plus Jakarta Sans', sans-serif">
+        Rizki Agung <br><span class="text-[#7163F1]">Dwi Prayoga</span>
+      </h1>
+      
+      <p class="text-white/70 text-lg md:text-xl max-w-2xl font-light leading-relaxed">
+        Informatics fresh graduate passionate about building clean, responsive, modern, and interactive web applications.
+      </p>
+      
+      <div class="flex flex-wrap gap-4 justify-center mt-4">
+        <a href="#project" class="bg-[#7163F1] hover:bg-[#5f51d8] text-white px-8 py-4 rounded-full font-bold tracking-wider uppercase text-xs transition-all duration-300 shadow-[0_0_20px_rgba(113,99,241,0.3)] hover:shadow-[0_0_30px_rgba(113,99,241,0.5)] transform hover:-translate-y-0.5">View Works</a>
+        <a href="#contact" class="bg-white/10 hover:bg-white/20 border border-white/10 text-white px-8 py-4 rounded-full font-bold tracking-wider uppercase text-xs transition-all duration-300">Contact Me</a>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 text-white/30 text-[10px] tracking-[0.3em] uppercase font-mono">
+      <span>Scroll</span>
+      <div class="w-px h-12 bg-gradient-to-b from-white/30 to-transparent"></div>
+    </div>
+  </section>
+
+  <!-- Main Content Wrapper -->
+  <div class="relative z-30 w-full bg-[#030303] rounded-t-[3rem] border-t border-white/5 shadow-2xl">
+    
+    <!-- 4. About Section -->
+    <section id="about" class="max-w-[1400px] mx-auto px-6 py-20 md:py-32">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        
+        <!-- Left Side: Intro & Bio -->
+        <div class="lg:col-span-7 flex flex-col gap-6">
+          <p class="text-[#7163F1] text-xs font-bold tracking-[0.4em] uppercase font-mono">01 — About Me</p>
+          <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight">
+            Building effective, efficient, and highly impactful digital solutions.
+          </h2>
+          <div class="w-12 h-px bg-white/20 my-2"></div>
+          <p class="text-white/70 text-base md:text-lg leading-relaxed font-light">
+            I am an Informatics graduate with over 3 years of hands-on experience in web, mobile, and AI development. Through academic projects, professional internships, and intensive training, I have mastered backend systems engineering, intuitive frontend design, and smart AI integrations. I am eager to leverage my software engineering skills to create real value for organizations and users.
+          </p>
+        </div>
+        
+        <!-- Right Side: CV Grid Cards -->
+        <div class="lg:col-span-5 grid grid-cols-1 gap-6 w-full">
+          <!-- Card 1 -->
+          <div class="bg-white/2 border border-white/5 rounded-3xl p-6 backdrop-blur-md">
+            <p class="text-white/40 text-[10px] tracking-[0.2em] uppercase font-mono mb-2">Core Focus</p>
+            <h3 class="text-xl font-bold text-[#7163F1] mb-1">Web Development &amp; UI Design</h3>
+            <p class="text-white/60 text-sm">Building interactive web frontends and scalable backend systems.</p>
+          </div>
+          
+          <!-- Card 2 -->
+          <div class="bg-white/2 border border-white/5 rounded-3xl p-6 backdrop-blur-md">
+            <p class="text-white/40 text-[10px] tracking-[0.2em] uppercase font-mono mb-2">Education</p>
+            <h3 class="text-xl font-bold text-white mb-1">Universitas Amikom Yogyakarta</h3>
+            <p class="text-[#7163F1] text-sm font-semibold mb-1">Bachelor of Computer Science</p>
+            <p class="text-white/50 text-xs">GPA 3.69 | Graduated 2025</p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bg-white/2 border border-white/5 rounded-3xl p-6 backdrop-blur-md">
+            <p class="text-white/40 text-[10px] tracking-[0.2em] uppercase font-mono mb-2">Additional Skills</p>
+            <div class="flex flex-wrap gap-2 mt-2">
+              <span class="bg-black/40 border border-white/10 text-white/80 text-xs rounded-full px-3.5 py-1.5 font-medium">Web Programming</span>
+              <span class="bg-black/40 border border-white/10 text-white/80 text-xs rounded-full px-3.5 py-1.5 font-medium">Mobile Development</span>
+              <span class="bg-black/40 border border-white/10 text-white/80 text-xs rounded-full px-3.5 py-1.5 font-medium">AI &amp; ML</span>
+              <span class="bg-black/40 border border-white/10 text-white/80 text-xs rounded-full px-3.5 py-1.5 font-medium">UI/UX Design</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5. Tech Stack Section -->
+    <section id="stack" class="w-full bg-black/40 border-y border-white/5 py-16">
+      <div class="max-w-[1400px] mx-auto px-6">
+        <p class="text-[#7163F1] text-xs font-bold tracking-[0.4em] uppercase font-mono mb-8">Technology &amp; Tools</p>
+        
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+          <!-- Stack Item -->
+          <div class="bg-white/2 border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:border-[#7163F1]/40 transition-all duration-300 hover:-translate-y-1">
+            <span class="text-xl font-bold text-white">JavaScript</span>
+            <span class="text-white/40 text-[10px] font-mono uppercase">Language</span>
+          </div>
+          <div class="bg-white/2 border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:border-[#7163F1]/40 transition-all duration-300 hover:-translate-y-1">
+            <span class="text-xl font-bold text-white">TypeScript</span>
+            <span class="text-white/40 text-[10px] font-mono uppercase">Language</span>
+          </div>
+          <div class="bg-white/2 border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:border-[#7163F1]/40 transition-all duration-300 hover:-translate-y-1">
+            <span class="text-xl font-bold text-white">PHP</span>
+            <span class="text-white/40 text-[10px] font-mono uppercase">Language</span>
+          </div>
+          <div class="bg-white/2 border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:border-[#7163F1]/40 transition-all duration-300 hover:-translate-y-1">
+            <span class="text-xl font-bold text-white">Python</span>
+            <span class="text-white/40 text-[10px] font-mono uppercase">Language</span>
+          </div>
+          <div class="bg-white/2 border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:border-[#7163F1]/40 transition-all duration-300 hover:-translate-y-1">
+            <span class="text-xl font-bold text-white">React.js</span>
+            <span class="text-white/40 text-[10px] font-mono uppercase">Frontend</span>
+          </div>
+          <div class="bg-white/2 border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:border-[#7163F1]/40 transition-all duration-300 hover:-translate-y-1">
+            <span class="text-xl font-bold text-white">Laravel</span>
+            <span class="text-white/40 text-[10px] font-mono uppercase">Backend</span>
+          </div>
+          <div class="bg-white/2 border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:border-[#7163F1]/40 transition-all duration-300 hover:-translate-y-1">
+            <span class="text-xl font-bold text-white">Node / Express</span>
+            <span class="text-white/40 text-[10px] font-mono uppercase">Backend</span>
+          </div>
+          <div class="bg-white/2 border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:border-[#7163F1]/40 transition-all duration-300 hover:-translate-y-1">
+            <span class="text-xl font-bold text-white">Flutter</span>
+            <span class="text-white/40 text-[10px] font-mono uppercase">Mobile</span>
+          </div>
+          <div class="bg-white/2 border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:border-[#7163F1]/40 transition-all duration-300 hover:-translate-y-1">
+            <span class="text-xl font-bold text-white">MySQL</span>
+            <span class="text-white/40 text-[10px] font-mono uppercase">Database</span>
+          </div>
+          <div class="bg-white/2 border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:border-[#7163F1]/40 transition-all duration-300 hover:-translate-y-1">
+            <span class="text-xl font-bold text-white">Firebase</span>
+            <span class="text-white/40 text-[10px] font-mono uppercase">Database</span>
+          </div>
+          <div class="bg-white/2 border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:border-[#7163F1]/40 transition-all duration-300 hover:-translate-y-1">
+            <span class="text-xl font-bold text-white">TensorFlow</span>
+            <span class="text-white/40 text-[10px] font-mono uppercase">AI / ML</span>
+          </div>
+          <div class="bg-white/2 border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 hover:border-[#7163F1]/40 transition-all duration-300 hover:-translate-y-1">
+            <span class="text-xl font-bold text-white">Git / Github</span>
+            <span class="text-white/40 text-[10px] font-mono uppercase">Version Control</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Portfolio Section -->
+    <section id="project" class="max-w-[1400px] mx-auto px-6 py-20 md:py-32">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-12">
+        <div>
+          <p class="text-[#7163F1] text-xs font-bold tracking-[0.4em] uppercase font-mono mb-2">02 — Portfolio</p>
+          <h2 class="text-3xl md:text-6xl font-bold tracking-tight text-white">Portfolio</h2>
+        </div>
+        <p class="text-white/50 text-sm max-w-xs md:text-right mt-4 md:mt-0 font-light">
+          Featured projects sourced directly from my GitHub repositories.
+        </p>
+      </div>
+
+      <!-- Project Cards Grid -->
+      <div id="project-cards-container"
+           class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+           style="display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+      <!-- Pagination -->
+      <div id="project-pagination" class="flex items-center justify-center gap-2 mt-12">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- Project Details Modal -->
+    <div id="project-modal" class="fixed inset-0 z-50 invisible opacity-0 flex items-center justify-center p-4 md:p-8">
+      <div class="absolute inset-0 bg-[#030303]/90 backdrop-blur-md" id="modal-bg-close"></div>
+
+      <div class="modal-box bg-[#0c0c0c] border border-white/10 w-full max-w-[860px] max-h-[90vh] rounded-3xl relative z-10 flex flex-col overflow-hidden shadow-2xl">
+        <!-- Close Button -->
+        <button id="modal-close" class="absolute top-5 right-5 bg-white/10 hover:bg-white/20 border border-white/10 w-9 h-9 rounded-full flex items-center justify-center z-20 text-white font-bold transition-all text-lg leading-none">&times;</button>
+
+        <!-- Gradient Banner (no image) -->
+        <div id="modal-hero-banner" class="w-full h-[140px] flex items-center justify-center relative overflow-hidden flex-shrink-0">
+          <div class="absolute inset-0 opacity-30" style="background:radial-gradient(ellipse at 30% 60%,rgba(255,255,255,0.06) 0%,transparent 70%);"></div>
+          <span id="modal-hero-icon" class="text-[72px] select-none leading-none drop-shadow-2xl z-10">💻</span>
+        </div>
+
+        <div class="overflow-y-auto flex-1 p-6 md:p-10 space-y-8 scrollbar-none">
+          <!-- Tags & Title -->
+          <div>
+            <span id="modal-tags" class="text-[#7163F1] text-[10px] font-bold tracking-[0.3em] uppercase font-mono">TAGS</span>
+            <h3 id="modal-title" class="text-2xl md:text-3xl font-bold tracking-tight text-white leading-tight mt-2">Project Title</h3>
+          </div>
+
+          <!-- Metrics -->
+          <div class="grid grid-cols-2 gap-6 border border-white/5 rounded-2xl p-6 bg-white/2">
+            <div>
+              <p id="modal-metric1-val" class="text-3xl font-extrabold text-[#7163F1] leading-none mb-1">Val</p>
+              <p id="modal-metric1-text" class="text-white/50 text-xs">Metric Text</p>
+            </div>
+            <div>
+              <p id="modal-metric2-val" class="text-3xl font-extrabold text-[#7163F1] leading-none mb-1">Val</p>
+              <p id="modal-metric2-text" class="text-white/50 text-xs">Metric Text</p>
+            </div>
+          </div>
+
+          <!-- Info Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-white/5 pt-6">
+            <div class="space-y-5">
+              <div>
+                <p class="text-white/35 text-[10px] uppercase tracking-widest font-mono mb-1.5">Role</p>
+                <p id="modal-role" class="text-white font-semibold text-sm">Role Name</p>
+              </div>
+              <div>
+                <p class="text-white/35 text-[10px] uppercase tracking-widest font-mono mb-1.5">Tech Stack</p>
+                <div id="modal-stack" class="flex flex-wrap gap-1"><!-- filled by JS --></div>
+              </div>
+              <div>
+                <p class="text-white/35 text-[10px] uppercase tracking-widest font-mono mb-1.5">Source Code</p>
+                <a id="modal-github" href="#" target="_blank" class="text-[#7163F1] hover:underline font-semibold text-sm">Open in GitHub &rarr;</a>
+              </div>
+            </div>
+
+            <div class="md:col-span-2 space-y-5">
+              <div>
+                <p class="text-white/35 text-[10px] uppercase tracking-widest font-mono mb-2">Challenge</p>
+                <p id="modal-challenge" class="text-white/75 leading-relaxed font-light text-sm">Details</p>
+              </div>
+              <div>
+                <p class="text-white/35 text-[10px] uppercase tracking-widest font-mono mb-2">Process &amp; Implementation</p>
+                <p id="modal-process" class="text-white/75 leading-relaxed font-light text-sm">Details</p>
+              </div>
+              <div>
+                <p class="text-white/35 text-[10px] uppercase tracking-widest font-mono mb-2">Outcome</p>
+                <p id="modal-outcome" class="text-white/75 leading-relaxed font-light text-sm">Details</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Work Experience Section -->
+    <section id="experience" class="max-w-[1400px] mx-auto px-6 py-20 md:py-32 border-t border-white/5">
+      <p class="text-[#7163F1] text-xs font-bold tracking-[0.4em] uppercase font-mono mb-2">03 — Career History</p>
+      <h2 class="text-3xl md:text-6xl font-bold tracking-tight text-white mb-16">Work Experience</h2>
+
+      <div class="space-y-12">
+        <!-- Experience 1 -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 pb-12 border-b border-white/10">
+          <div class="md:col-span-4">
+            <span class="text-white/40 text-sm font-mono block mb-2">Jul 2024 - Dec 2024</span>
+            <h3 class="text-2xl font-bold text-white">CV SIC Yogyakarta</h3>
+            <p class="text-[#7163F1] text-sm font-medium mt-1">Yogyakarta, Indonesia</p>
+          </div>
+          <div class="md:col-span-8 space-y-4">
+            <h4 class="text-xl font-semibold text-white/90">Programmer (Intern)</h4>
+            <p class="text-white/70 font-light leading-relaxed">
+              Assisted in developing, implementing, and maintaining web applications and managing relational database schemas to optimize corporate data workflows.
+            </p>
+            <ul class="space-y-2 text-white/60 text-sm font-light">
+              <li class="flex items-start gap-2.5">
+                <span class="text-[#7163F1] mt-1.5">&bull;</span>
+                <span>Assisting in the development and maintenance of web applications according to company needs.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-[#7163F1] mt-1.5">&bull;</span>
+                <span>Assisting in implementing responsive frontend website interfaces using HTML, CSS, and JavaScript.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-[#7163F1] mt-1.5">&bull;</span>
+                <span>Performing data management and ensuring relational database accuracy in company systems.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Contact & Footer Section -->
+    <section id="contact" class="max-w-[1400px] mx-auto px-6 pt-24 pb-12 border-t border-white/5">
+      <div class="flex flex-col gap-8">
+        <p class="text-[#7163F1] text-xs font-bold tracking-[0.4em] uppercase font-mono">05 — Contact</p>
+        <div class="text-3xl sm:text-4xl md:text-6xl font-medium tracking-tight text-white/90 leading-tight">
+          Let's collaborate to build something outstanding together.<br>
+          Get in touch to talk about your next project.
+        </div>
+        
+        <a href="mailto:kyyrizvz@gmail.com" class="group w-fit flex items-center gap-2 md:gap-6 mt-8">
+          <h2 class="text-[12vw] md:text-[8rem] font-extrabold tracking-tighter text-white leading-none group-hover:text-[#7163F1] transition-all duration-300">
+            Let's Talk
+          </h2>
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" class="text-5xl md:text-8xl text-white transition-transform duration-500 group-hover:translate-x-4 group-hover:-translate-y-4 group-hover:text-[#7163F1]" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path d="M204,64V168a12,12,0,0,1-24,0V93L72.49,200.49a12,12,0,0,1-17-17L163,76H88a12,12,0,0,1,0-24H192A12,12,0,0,1,204,64Z"></path>
+          </svg>
+        </a>
+      </div>
+
+      <div class="w-full h-px bg-white/10 mt-20 mb-10"></div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10 text-xs md:text-sm font-semibold text-white/70">
+        <div class="flex flex-col justify-between gap-6">
+          <p class="font-mono text-white text-base">rizki.dev</p>
+          <p class="text-white/40 font-light">All rights reserved &copy; 2026</p>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <p class="text-white">Yogyakarta, Indonesia</p>
+          <p class="text-white/50">Available for Remote Work</p>
+          <p class="text-[#7163F1] mt-2 font-bold font-mono">kyyrizvz@gmail.com</p>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <p class="text-white/40">Local Time (Jakarta)</p>
+          <p class="text-white text-base font-mono mt-1" id="footer-clock">Calculating... WIB</p>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <p class="text-white/40 mb-1">Social Media</p>
+          <a class="hover:text-[#7163F1] transition-colors" href="https://www.linkedin.com/in/rizkiadp" target="_blank">LinkedIn</a>
+          <a class="hover:text-[#7163F1] transition-colors" href="https://github.com/rizkiadp" target="_blank">GitHub</a>
+          <a class="hover:text-[#7163F1] transition-colors" href="https://www.instagram.com/riskiiiadp" target="_blank">Instagram</a>
+          <a class="hover:text-[#7163F1] transition-colors" href="https://wa.me/62881026002302" target="_blank">WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- CDN scripts: GSAP, ScrollTrigger, Lenis, ThreeJS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+
+  <!-- Custom Site Scripts -->
+  <script src="/assets/js/app.js"></script>
+  <script src="/assets/js/background.js"></script>
+</body>
+</html>

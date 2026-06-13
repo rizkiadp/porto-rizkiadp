@@ -1,0 +1,100 @@
+@font-face {
+  font-family: "Geist Sans";
+  src: url("../../_next/static/media/Geist_Variable-s.p.92592eb2.woff2")
+    format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("../../_next/static/media/GeistMono_Variable.p.2f937313.woff2")
+    format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Map Next.js automatically generated class names to our custom font-faces */
+.geistsans_d5a4f12f-module__FX8hIq__className {
+  font-family:
+    "Geist Sans",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif !important;
+}
+
+.geistmono_157ca88a-module__dBkXbG__variable {
+  font-family:
+    "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    monospace !important;
+  --font-geist-mono: "Geist Mono", monospace;
+}
+
+/* Lenis Custom Smooth Scroll Setup */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Custom transitions and scrollbar overrides */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
+
+/* Rotating Logo styles */
+.logo-spin {
+  animation: logo-rotation 20s linear infinite;
+}
+
+@keyframes logo-rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Animation Performance Optimizations */
+section,
+.porto-card,
+h2,
+#stack [class*='rounded'],
+#about img,
+#about video,
+#about .bg-white\/2 {
+  will-change: transform, opacity, filter, clip-path;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
