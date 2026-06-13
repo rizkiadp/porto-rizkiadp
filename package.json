@@ -1,1 +1,13 @@
-{}
+{
+  "name": "rizkiadp-porto",
+  "version": "1.0.0",
+  "description": "Rizki Agung Dwi Prayoga Portfolio Website",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Static HTML site - use a local server'",
+    "build": "echo 'No build step required for static site'"
+  },
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
+  }
+}
