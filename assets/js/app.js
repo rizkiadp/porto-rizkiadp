@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 3. Dynamic Rotating Text Logo
   const rotatingLogo = document.getElementById("rotating-logo");
   if (rotatingLogo) {
-    const text = "RIZKI AGUNG DWI PRAYOGA * WEB DEVELOPER * ";
+    const text = "RIZKI AGUNG DWI PRAYOGA * DIGITAL & WEB DEVELOPER * ";
     rotatingLogo.innerHTML = "";
     const angleStep = 360 / text.length;
 
