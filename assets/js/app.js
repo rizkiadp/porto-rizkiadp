@@ -202,13 +202,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function getLangIcon(stack, tags) {
     const combined = (stack + " " + tags).toLowerCase();
-    if (combined.includes("flutter") || combined.includes("dart")) return "📱";
-    if (combined.includes("python") && (combined.includes("ai") || combined.includes("ml") || combined.includes("tensorflow"))) return "🤖";
-    if (combined.includes("python")) return "🐍";
-    if (combined.includes("react")) return "⚛️";
-    if (combined.includes("node")) return "🟢";
-    if (combined.includes("php")) return "🐘";
-    return "💻";
+    if (combined.includes("flutter") || combined.includes("dart")) {
+      return '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="text-white/80"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>';
+    }
+    if (combined.includes("python") && (combined.includes("ai") || combined.includes("ml") || combined.includes("tensorflow") || combined.includes("cnn"))) {
+      return '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="text-white/80"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/></svg>';
+    }
+    if (combined.includes("python")) {
+      return '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="text-white/80"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>';
+    }
+    if (combined.includes("react")) {
+      return '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="text-white/80"><circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(30 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(90 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(150 12 12)"/></svg>';
+    }
+    if (combined.includes("node")) {
+      return '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="text-white/80"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg>';
+    }
+    if (combined.includes("php")) {
+      return '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="text-white/80"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>';
+    }
+    return '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="text-white/80"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>';
   }
 
   const defaultProjects = [
@@ -553,7 +565,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (heroBanner) {
       heroBanner.style.background = `linear-gradient(135deg, ${c1}22 0%, ${c2}55 100%)`;
       heroBanner.style.borderBottom = `1px solid ${c1}30`;
-      document.getElementById("modal-hero-icon").textContent = icon;
+      const iconEl = document.getElementById("modal-hero-icon");
+      if (iconEl) iconEl.innerHTML = icon;
     }
 
     const titleText = (typeof proj.title === 'object' && proj.title !== null)
@@ -577,7 +590,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("modal-title").textContent = titleText;
     document.getElementById("modal-tags").textContent = proj.tags || "GitHub Repository";
-    document.getElementById("modal-metric1-val").textContent = proj.metric1Val || (proj.stargazers_count ? (proj.stargazers_count + ' ★') : 'Active');
+    document.getElementById("modal-metric1-val").textContent = proj.metric1Val || (proj.stargazers_count ? (proj.stargazers_count + ' Stars') : 'Active');
     document.getElementById("modal-metric1-text").textContent = m1Text || (isEn ? 'Repository Status' : 'Status Repositori');
     document.getElementById("modal-metric2-val").textContent = proj.metric2Val || (proj.forks_count ? (proj.forks_count + ' Forks') : 'Public');
     document.getElementById("modal-metric2-text").textContent = m2Text || (isEn ? 'Visibility' : 'Visibilitas');
@@ -720,7 +733,7 @@ document.addEventListener("DOMContentLoaded", () => {
             githubLink: repo.html_url,
             role: isEn ? "Creator / Open-source Contributor" : "Pembuat / Kontributor Open-source",
             stack: repo.language || "Git, Fullstack",
-            metric1Val: repo.stargazers_count ? (repo.stargazers_count + " ★") : (repo.open_issues_count === 0 ? "100% Stable" : "Active"),
+            metric1Val: repo.stargazers_count ? (repo.stargazers_count + " Stars") : (repo.open_issues_count === 0 ? "100% Stable" : "Active"),
             metric1Text: {
               id: "Bintang GitHub & Stabilitas",
               en: "GitHub Stars & Stability"
