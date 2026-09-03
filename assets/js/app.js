@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return "💻";
   }
 
-  const projects = [
+  const defaultProjects = [
     {
       id: 1,
       title: {
@@ -436,7 +436,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   ];
 
-  // Render Projects cards with Pagination
+  // ==========================================
+  // Real-Time GitHub Repository Integration
+  // ==========================================
+  let projects = [...defaultProjects];
   const projectCardsContainer = document.getElementById("project-cards-container");
   const paginationContainer = document.getElementById("project-pagination");
   const ITEMS_PER_PAGE = 6;
@@ -449,11 +452,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const pageProjects = projects.slice(start, start + ITEMS_PER_PAGE);
 
     pageProjects.forEach((proj) => {
-      const titleText = proj.title[locale];
+      const titleText = (typeof proj.title === 'object' && proj.title !== null)
+        ? (proj.title[locale] || proj.title.id || proj.title.en || "")
+        : String(proj.title || "");
       const displayTitle = titleText.split(" - ")[0];
-      const [c1, c2] = getGradient(proj.stack, proj.tags);
-      const icon = getLangIcon(proj.stack, proj.tags);
-      const stackArr = proj.stack.split(", ");
+      const [c1, c2] = getGradient(proj.stack || "", proj.tags || "");
+      const icon = getLangIcon(proj.stack || "", proj.tags || "");
+      const stackArr = (proj.stack || "GitHub").split(", ");
       const visibleTags = stackArr.slice(0, 4)
         .map(t => `<span class="porto-tag">${t}</span>`).join("");
       const extra = stackArr.length > 4
@@ -461,13 +466,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const repoName = proj.githubLink === "#"
         ? "PRIVATE" : proj.githubLink.split("/").pop();
 
+      const challengeText = (typeof proj.challenge === 'object' && proj.challenge !== null)
+        ? (proj.challenge[locale] || proj.challenge.id || proj.challenge.en || "")
+        : String(proj.challenge || "");
+
       const card = document.createElement("div");
       card.className = "porto-card";
       card.innerHTML = `
         <div class="porto-card-header" style="background:linear-gradient(135deg,${c1}28,${c2}50);border-bottom:1px solid ${c1}28;">
           <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 25% 55%,${c1}20,transparent 65%);"></div>
           <span class="porto-card-icon">${icon}</span>
-          <span class="porto-card-year">${proj.year}</span>
+          <span class="porto-card-year">${proj.year || new Date().getFullYear()}</span>
           <div class="porto-card-lang">
             <span class="porto-card-lang-dot" style="background:${c1};"></span>
             <span class="porto-card-lang-name">${stackArr[0]}</span>
@@ -476,8 +485,8 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="porto-card-body">
           <div style="display:flex;flex-direction:column;gap:8px;">
             <h3 class="porto-card-title">${displayTitle}</h3>
-            <span class="porto-card-role">${proj.role}</span>
-            <p class="porto-card-desc">${proj.challenge[locale]}</p>
+            <span class="porto-card-role">${proj.role || (isEn ? 'Developer' : 'Pengembang')}</span>
+            <p class="porto-card-desc">${challengeText}</p>
           </div>
           <div class="porto-card-tags">${visibleTags}${extra}</div>
           <div class="porto-card-footer">
@@ -529,9 +538,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  renderCards(currentPage);
-
-
   // Modal handlers
   const modal = document.getElementById("project-modal");
   const modalCloseBtn = document.getElementById("modal-close");
@@ -539,8 +545,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function openProjectModal(proj) {
     if (!modal) return;
-    const [c1, c2] = getGradient(proj.stack, proj.tags);
-    const icon = getLangIcon(proj.stack, proj.tags);
+    const [c1, c2] = getGradient(proj.stack || "", proj.tags || "");
+    const icon = getLangIcon(proj.stack || "", proj.tags || "");
 
     // Gradient banner
     const heroBanner = document.getElementById("modal-hero-banner");
@@ -550,19 +556,38 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("modal-hero-icon").textContent = icon;
     }
 
-    document.getElementById("modal-title").textContent = proj.title[locale];
-    document.getElementById("modal-tags").textContent = proj.tags;
-    document.getElementById("modal-metric1-val").textContent = proj.metric1Val;
-    document.getElementById("modal-metric1-text").textContent = proj.metric1Text[locale];
-    document.getElementById("modal-metric2-val").textContent = proj.metric2Val;
-    document.getElementById("modal-metric2-text").textContent = proj.metric2Text[locale];
-    document.getElementById("modal-role").textContent = proj.role;
-    document.getElementById("modal-stack").innerHTML = proj.stack.split(", ")
+    const titleText = (typeof proj.title === 'object' && proj.title !== null)
+      ? (proj.title[locale] || proj.title.id || proj.title.en || "")
+      : String(proj.title || "");
+    const m1Text = (typeof proj.metric1Text === 'object' && proj.metric1Text !== null)
+      ? (proj.metric1Text[locale] || proj.metric1Text.id || proj.metric1Text.en || "")
+      : String(proj.metric1Text || "");
+    const m2Text = (typeof proj.metric2Text === 'object' && proj.metric2Text !== null)
+      ? (proj.metric2Text[locale] || proj.metric2Text.id || proj.metric2Text.en || "")
+      : String(proj.metric2Text || "");
+    const challengeText = (typeof proj.challenge === 'object' && proj.challenge !== null)
+      ? (proj.challenge[locale] || proj.challenge.id || proj.challenge.en || "")
+      : String(proj.challenge || "");
+    const processText = (typeof proj.process === 'object' && proj.process !== null)
+      ? (proj.process[locale] || proj.process.id || proj.process.en || "")
+      : String(proj.process || "");
+    const outcomeText = (typeof proj.outcome === 'object' && proj.outcome !== null)
+      ? (proj.outcome[locale] || proj.outcome.id || proj.outcome.en || "")
+      : String(proj.outcome || "");
+
+    document.getElementById("modal-title").textContent = titleText;
+    document.getElementById("modal-tags").textContent = proj.tags || "GitHub Repository";
+    document.getElementById("modal-metric1-val").textContent = proj.metric1Val || (proj.stargazers_count ? (proj.stargazers_count + ' ★') : 'Active');
+    document.getElementById("modal-metric1-text").textContent = m1Text || (isEn ? 'Repository Status' : 'Status Repositori');
+    document.getElementById("modal-metric2-val").textContent = proj.metric2Val || (proj.forks_count ? (proj.forks_count + ' Forks') : 'Public');
+    document.getElementById("modal-metric2-text").textContent = m2Text || (isEn ? 'Visibility' : 'Visibilitas');
+    document.getElementById("modal-role").textContent = proj.role || (isEn ? 'Creator / Developer' : 'Pembuat / Pengembang');
+    document.getElementById("modal-stack").innerHTML = (proj.stack || "GitHub, Git").split(", ")
       .map(t => `<span class="inline-block bg-white/5 border border-white/10 text-white/60 text-xs font-mono rounded-full px-3 py-1 mr-1.5 mb-1.5">${t}</span>`)
       .join("");
-    document.getElementById("modal-challenge").textContent = proj.challenge[locale];
-    document.getElementById("modal-process").textContent = proj.process[locale];
-    document.getElementById("modal-outcome").textContent = proj.outcome[locale];
+    document.getElementById("modal-challenge").textContent = challengeText;
+    document.getElementById("modal-process").textContent = processText;
+    document.getElementById("modal-outcome").textContent = outcomeText;
 
     const ghLink = document.getElementById("modal-github");
     if (proj.githubLink === "#") {
@@ -608,6 +633,138 @@ document.addEventListener("DOMContentLoaded", () => {
       closeProjectModal();
     }
   });
+
+  // Fetch repositories from GitHub API real-time with local cache
+  async function loadGitHubProjects() {
+    const CACHE_KEY = "rizkiadp_gh_repos_v1";
+    const CACHE_TIME_KEY = "rizkiadp_gh_repos_v1_time";
+    const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
+
+    let repos = null;
+    try {
+      const cachedData = localStorage.getItem(CACHE_KEY);
+      const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+      if (cachedData && cachedTime && (Date.now() - Number(cachedTime) < CACHE_TTL)) {
+        repos = JSON.parse(cachedData);
+      }
+    } catch (err) {
+      console.warn("Storage access error:", err);
+    }
+
+    if (!repos) {
+      try {
+        const response = await fetch("https://api.github.com/users/rizkiadp/repos?sort=updated&per_page=100");
+        if (response.ok) {
+          repos = await response.json();
+          if (Array.isArray(repos)) {
+            try {
+              localStorage.setItem(CACHE_KEY, JSON.stringify(repos));
+              localStorage.setItem(CACHE_TIME_KEY, String(Date.now()));
+            } catch (e) {}
+          }
+        }
+      } catch (err) {
+        console.warn("Could not fetch real-time repos from GitHub:", err);
+      }
+    }
+
+    if (Array.isArray(repos) && repos.length > 0) {
+      // Build lookup map of curated projects by repo name or slug
+      const curatedMap = new Map();
+      defaultProjects.forEach(dp => {
+        if (dp.githubLink && dp.githubLink !== "#") {
+          const repoSlug = dp.githubLink.split("/").pop().toLowerCase();
+          curatedMap.set(repoSlug, dp);
+        }
+      });
+
+      const merged = [];
+      const usedCurated = new Set();
+
+      repos.forEach(repo => {
+        if (repo.fork) return; // skip forks if any
+        const repoNameLower = repo.name.toLowerCase();
+        if (curatedMap.has(repoNameLower)) {
+          const matched = curatedMap.get(repoNameLower);
+          usedCurated.add(matched.id);
+          merged.push({
+            ...matched,
+            stargazers_count: repo.stargazers_count,
+            forks_count: repo.forks_count,
+            updated_at: repo.updated_at,
+            year: repo.updated_at ? new Date(repo.updated_at).getFullYear() : matched.year
+          });
+        } else {
+          // Dynamic repository item
+          const lang = repo.language || "Code";
+          const tagsArr = [];
+          if (repo.topics && repo.topics.length > 0) {
+            tagsArr.push(...repo.topics.map(t => t.charAt(0).toUpperCase() + t.slice(1)));
+          }
+          if (repo.language && !tagsArr.includes(repo.language)) {
+            tagsArr.unshift(repo.language);
+          }
+          if (tagsArr.length === 0) tagsArr.push("Web & Software");
+
+          const formattedTitle = repo.name.replace(/[-_]/g, " ");
+          const desc = repo.description || (isEn ? "Open-source project on GitHub." : "Proyek open-source di repositori GitHub.");
+
+          merged.push({
+            id: 'gh_' + repo.id,
+            title: {
+              id: formattedTitle,
+              en: formattedTitle
+            },
+            year: repo.updated_at ? new Date(repo.updated_at).getFullYear() : (repo.created_at ? new Date(repo.created_at).getFullYear() : 2024),
+            tags: tagsArr.join(", "),
+            githubLink: repo.html_url,
+            role: isEn ? "Creator / Open-source Contributor" : "Pembuat / Kontributor Open-source",
+            stack: repo.language || "Git, Fullstack",
+            metric1Val: repo.stargazers_count ? (repo.stargazers_count + " ★") : (repo.open_issues_count === 0 ? "100% Stable" : "Active"),
+            metric1Text: {
+              id: "Bintang GitHub & Stabilitas",
+              en: "GitHub Stars & Stability"
+            },
+            metric2Val: repo.forks_count ? (repo.forks_count + " Forks") : "Live Repo",
+            metric2Text: {
+              id: "Repositori Publik",
+              en: "Public Repository"
+            },
+            challenge: {
+              id: desc,
+              en: desc
+            },
+            process: {
+              id: "Dikembangkan dengan kontrol versi Git menggunakan workflow standar industri serta best practice arsitektur modern.",
+              en: "Developed with Git version control using industry standard workflows and modern architecture best practices."
+            },
+            outcome: {
+              id: "Tersedia publik di GitHub dengan repositori aktif, kode sumber modular, dan dokumentasi terbuka.",
+              en: "Publicly accessible on GitHub with active repository, modular codebase, and open documentation."
+            },
+            stargazers_count: repo.stargazers_count,
+            forks_count: repo.forks_count,
+            updated_at: repo.updated_at
+          });
+        }
+      });
+
+      // Include any remaining curated projects (e.g. private/confidential client projects)
+      defaultProjects.forEach(dp => {
+        if (!usedCurated.has(dp.id)) {
+          merged.push(dp);
+        }
+      });
+
+      projects = merged;
+    }
+
+    renderCards(1);
+  }
+
+  // Initial render
+  renderCards(currentPage);
+  loadGitHubProjects();
 
   // 7. Update Clock Time (Jakarta/WIB timezone)
   const clockElement = document.getElementById("footer-clock");
